@@ -3,9 +3,10 @@ FROM debian:buster-slim
 ARG OWN_JAVA_VERSION="14.0.2"
 
 ARG OWN_COMMAND_LINE_TOOLS_VERSION="7302050"  # Latest: 10406996
+# NDK download: https://developer.android.com/ndk/downloads
 ARG OWN_ANDROID_NDK_VERSION="21"  # Other versions: https://github.com/android/ndk/wiki/Unsupported-Downloads
 
-ARG OWN_SMARTTUBE_TAG="19.57"
+ARG OWN_SMARTTUBE_TAG="19.54"
 
 ARG OWN_DEVICE_IP="192.168.1.128"             # Android Device IP Address
 
@@ -31,6 +32,7 @@ RUN apt-get update     \
     && rm -rf /var/lib/apt/lists/*
 
 # Install sdkman to install own java version
+# Information: https://sdkman.io/jdks
 RUN wget -qO- "https://get.sdkman.io" | bash \
  && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && sdk install java ${OWN_JAVA_VERSION}-open && sdk use java ${OWN_JAVA_VERSION}-open"
 
@@ -50,6 +52,8 @@ RUN wget -q https://dl.google.com/android/repository/commandlinetools-linux-${OW
 RUN yes | sdkmanager --licenses
 
 # Download and install Android NDK
+# https://developer.android.com/ndk/downloads
+# https://github.com/android/ndk/wiki/Unsupported-Downloads
 RUN wget -q https://dl.google.com/android/repository/android-ndk-r${OWN_ANDROID_NDK_VERSION}e-linux-x86_64.zip \
  && unzip android-ndk-r${OWN_ANDROID_NDK_VERSION}e-linux-x86_64.zip -d /usr/local                              \
  && rm android-ndk-r${OWN_ANDROID_NDK_VERSION}e-linux-x86_64.zip
